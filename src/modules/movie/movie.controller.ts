@@ -2,6 +2,7 @@ import {Router} from "express"
 import {
   fetchMovieSearchs,
   fetchSearchMovies,
+  fetchMovieByID,
 } from "./movie.services"
 const movieRouter = Router()
 
@@ -10,7 +11,7 @@ movieRouter.get("/getMovieSearchs", async (req, res, next) => {
   try {
     const {page} = req.query;
     const parsedPage = page && !isNaN(Number(page)) ? Math.min(Number(page), 500) : 1
-    const data = await fetchMovieSearchs({page: parsedPage});
+    const {data} = await fetchMovieSearchs({page: parsedPage});
     return res.status(200).json({
       status:200,
       message: `${data.results.length} movies found`, 
@@ -43,7 +44,7 @@ movieRouter.get("/search", async (req, res , next) => {
     }
   
     const parsedPage = page && !isNaN(Number(page)) ? Math.min(Number(page), 500) : 1
-    const data = await fetchSearchMovies({
+    const {data} = await fetchSearchMovies({
       page: parsedPage,
       query: query as string,
       include_adult: include_adult?.toString().toLowerCase() === "true",
@@ -60,6 +61,25 @@ movieRouter.get("/search", async (req, res , next) => {
     })
   } catch (err) {
     return next(err);
+  }
+})
+
+movieRouter.get("/:movie_id", async (req, res, next) => {
+  try { 
+    const movie_id = req.params.movie_id;
+    if (!movie_id || isNaN(Number(movie_id))) {
+      return res.status(400).json({
+        status: 400,
+        message: !movie_id ? "you needed to provide a movie id" : "the movie id needs to be a number"
+      })
+    } 
+    const {data, status} = await fetchMovieByID({movie_id: Number(movie_id)}) 
+    return res.status(status).json({
+      status: status,
+      data: data
+    }) 
+  } catch (err) {
+    return next(err)
   }
 })
 
