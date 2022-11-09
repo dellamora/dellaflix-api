@@ -1,12 +1,24 @@
 import {Router} from "express"
-import axios from "axios"
-import {BaseSearchResponse, PopularMovie} from "../../domain/interfaces"
+import {fetchPopularMovies} from "./movie.services"
 const movieRouter = Router()
 
 
-movieRouter.get("/getPopularMovies", async (req, res) => {
-    const response = await axios.get<BaseSearchResponse<PopularMovie>>(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.MOVIE_DB_API_KEY}&language=en-US&page=1`)
-     res.status(200).json(response.data)
- })
+movieRouter.get("/getPopularMovies", async (req, res, next) => {
+  try {
+    const {page} = req.query;
+    const parsedPage = page && !isNaN(Number(page)) ? Math.min(Number(page), 500) : 1
+    const data = await fetchPopularMovies({page: parsedPage});
+    return res.status(200).json({
+      status:200,
+      message: `${data.results.length} movies found`, 
+      page: parsedPage,
+      hasNextPage: 500 > data.page,
+      data: data.results
+    })
+  } catch (err) {
+    return next(err);
+  }
+})
+
 
  export default movieRouter
