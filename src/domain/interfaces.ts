@@ -23,8 +23,16 @@ export interface PopularMovie {
     vote_count:        number;
 }
 
-export interface GetPopularMoviesParams {
+export interface DefaultMoviesParams {
     language?: string;
     page?: number;
     region?: string;
+    
+}
+
+export interface SearchMoviesParams extends DefaultMoviesParams{
+    query: string;
+    include_adult?: boolean;
+    year?: number;
+    primary_release_year?: number;
 }
