@@ -1,6 +1,6 @@
 
 import axios from "axios"
-import {BaseSearchResponse, PopularMovie, GetPopularMoviesParams} from "../../domain/interfaces"
+import {BaseSearchResponse, PopularMovie, DefaultMoviesParams, SearchMoviesParams} from "../../domain/interfaces"
 
 
 export const fetchMovieDB = async <
@@ -21,9 +21,9 @@ export const fetchMovieDB = async <
   return result.data
 }
 
-export const fetchPopularMovies = async (params: GetPopularMoviesParams ) => {
+export const fetchPopularMovies = async (params: DefaultMoviesParams ) => {
   try {
-    const result =  await fetchMovieDB<PopularMovie[], GetPopularMoviesParams>(
+    const result =  await fetchMovieDB<PopularMovie[], DefaultMoviesParams>(
       "https://api.themoviedb.org/3/movie/popular",
       params
     )
@@ -34,3 +34,14 @@ export const fetchPopularMovies = async (params: GetPopularMoviesParams ) => {
   }
 }
 
+export const fetchSearchMovies = async (params: SearchMoviesParams) => {
+  try {
+    const result = await fetchMovieDB<PopularMovie[], SearchMoviesParams>(
+      "https://api.themoviedb.org/3/search/movie",
+      params
+    )
+      return result
+  } catch (error) {
+    console.error(error)
+  }
+}
