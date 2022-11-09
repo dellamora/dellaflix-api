@@ -6,7 +6,7 @@ export interface BaseSearchResponse<T> {
 }
 
 
-export interface PopularMovie {
+export interface MovieSearch {
     adult:             boolean;
     backdrop_path:     string;
     genre_ids:         number[];
