@@ -5,6 +5,7 @@ export interface BaseSearchResponse<T> {
     results: T;
 }
 
+
 export interface PopularMovie {
     adult:             boolean;
     backdrop_path:     string;
@@ -22,3 +23,8 @@ export interface PopularMovie {
     vote_count:        number;
 }
 
+export interface GetPopularMoviesParams {
+    language?: string;
+    page?: number;
+    region?: string;
+}
