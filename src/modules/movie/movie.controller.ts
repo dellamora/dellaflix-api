@@ -1,6 +1,6 @@
 import {Router} from "express"
 import {
-  fetchMovieSearchs,
+  fetchPopularMovies,
   fetchSearchMovies,
   fetchMovieByID,
   fetchAllGenres,
@@ -9,11 +9,11 @@ import {
 const movieRouter = Router()
 
 
-movieRouter.get("/getMovieSearchs", async (req, res, next) => {
+movieRouter.get("/getPopularMovies", async (req, res, next) => {
   try {
     const {page} = req.query;
     const parsedPage = page && !isNaN(Number(page)) ? Math.min(Number(page), 500) : 1
-    const {data} = await fetchMovieSearchs({page: parsedPage});
+    const {data} = await fetchPopularMovies({page: parsedPage});
     return res.status(200).json({
       status:200,
       message: `${data.results.length} movies found`, 

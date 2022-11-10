@@ -28,7 +28,7 @@ export const fetchMovieDB = async <
   return {status,data}
 }
 
-export const fetchMovieSearchs = async (params: DefaultMoviesParams ) => {
+export const fetchPopularMovies = async (params: DefaultMoviesParams ) => {
   try {
     const result =  await fetchMovieDB<BaseSearchResponse<MovieSearch[]>, DefaultMoviesParams>(
       "https://api.themoviedb.org/3/movie/popular",
