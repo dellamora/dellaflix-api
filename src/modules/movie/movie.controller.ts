@@ -3,6 +3,8 @@ import {
   fetchMovieSearchs,
   fetchSearchMovies,
   fetchMovieByID,
+  fetchAllGenres,
+  fetchMoviesByGenre,
 } from "./movie.services"
 const movieRouter = Router()
 
@@ -61,6 +63,37 @@ movieRouter.get("/search", async (req, res , next) => {
     })
   } catch (err) {
     return next(err);
+  }
+})
+
+movieRouter.get("/getAllGenres", async (req, res, next) => {
+  try {
+    const {data, status} = await fetchAllGenres()
+    return res.status(status).json({
+      status,
+      data: data?.genres || null 
+    })
+  } catch (err) {
+    return next(err)
+  }
+}) 
+
+movieRouter.get("/getMovieByGenre", async (req, res, next) => {
+  try {
+    const {genre} = req.query;
+    if (!genre || typeof genre !== "string") {
+      return res.status(400).json({
+        status: 400,
+        message: "you need to specify a genre"
+      })
+    }
+    const {data, status} = await fetchMoviesByGenre(genre) 
+    return res.status(status).json({
+      status:status,
+      data: data
+    })
+  } catch (err) {
+    return next(err)
   }
 })
 
