@@ -6,4 +6,4 @@ dotenv.config()
 const app = express()
 app.use("/movie", movieRouter)
 
-app.listen(3000, () => {console.log("RODANDO")})
+app.listen(4000, () => {console.log("RODANDO")})
